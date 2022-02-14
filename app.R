@@ -167,18 +167,18 @@ server <- function(input, output, session) {
     ed <- split(ed,ed$Patient,drop = F)
     ed <- lapply(ed, function(x) x %>% select(Drug,EC50, EC50_SE))
     ed <- merge.list(ed, by = "Drug")
-    colnames(ed) <- c("Drug",paste0(rep(c("EC50","EC50_SE"),length(unique(dat$Patient))),
-                                    seq_along(unique(dat$Patient)),sep = "."))
+    colnames(ed) <- c("Drug",paste0(rep(c("EC50","EC50_SE"),length(unique(dat$Patient))),"(Patient ",
+                                    rep(seq_along(unique(dat$Patient)),each = length(unique(dat$Patient))),")"))
     ed <<- ed
      
     ic <- ic2 %>% select(Patient, Drug,IC50,IC50_SE)
-    ic$EC50 <- round(ic$IC50,2)
-    ic$EC50_SE <- round(ic$IC50_SE,2)
+    ic$IC50 <- round(ic$IC50,2)
+    ic$IC50_SE <- round(ic$IC50_SE,2)
     ic <- split(ic,ic$Patient,drop = F)
     ic <- lapply(ic, function(x) x %>% select(Drug,IC50, IC50_SE))
     ic <- merge.list(ic, by = "Drug")
-    colnames(ic) <- c("Drug",paste0(rep(c("IC50","IC50_SE"),length(unique(dat$Patient))),
-                                    seq_along(unique(dat$Patient)),sep = "."))
+    colnames(ic) <- c("Drug",paste0(rep(c("IC50","IC50_SE"),length(unique(dat$Patient))),"(Patient ",
+                                    rep(seq_along(unique(dat$Patient)),each = length(unique(dat$Patient))),")"))
     ic <<- ic
     
     # Update drug selection list
