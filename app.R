@@ -57,6 +57,7 @@ ui <- fluidPage(
       h2("Drug response curve"),
       h3(textOutput("drug_title")),
       plotlyOutput("drm"),
+      downloadButton("shown", label = "Export displayed plot!"),
       h2("EC/IC table"),
       tabsetPanel(
         id = 'dataset',
