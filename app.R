@@ -211,7 +211,7 @@ server <- function(input, output, session) {
         ggfits <- plot.res %>% filter(grepl(ds,Treatment_Drug),grepl(ps,Patient))
         ggdf <- dat.list %>% filter(grepl(ds,Treatment_Drug),grepl(ps,Patient))
         
-        plot.drug(ggdf,ggfits)
+        g <<- plot.drug(ggdf,ggfits)
       }
     })
   })
@@ -274,7 +274,7 @@ server <- function(input, output, session) {
       ggfits <- plot.res %>% filter(grepl(ds,Treatment_Drug),grepl(ps,Patient))
       ggdf <- dat.list %>% filter(grepl(ds,Treatment_Drug),grepl(ps,Patient))
       
-      plot.drug(ggdf,ggfits)
+      g <<- plot.drug(ggdf,ggfits)
     })
     output$drug_title <- renderText({info$value})
     output$raw <- DT::renderDataTable({
@@ -295,7 +295,7 @@ server <- function(input, output, session) {
       ggfits <- plot.res %>% filter(grepl(ds,Treatment_Drug),grepl(ps,Patient))
       ggdf <- dat.list %>% filter(grepl(ds,Treatment_Drug),grepl(ps,Patient))
       
-      g1 <- plot.drug(ggdf,ggfits)
+      g <<- plot.drug(ggdf,ggfits)
     })
     output$drug_title <- renderText({info$value})
     output$raw <- DT::renderDataTable({
@@ -349,6 +349,23 @@ server <- function(input, output, session) {
       path <- unlist(path)
 
       zip(zipfile = plot, files = path, extras = '-j')
+    }
+  )
+    
+  # Download displayed plot
+  plotInput = function() {
+    return(g)
+  }
+  output$shown <- downloadHandler(
+    # file name
+    filename <- "Export.png",
+    # content
+    content = function(file){
+      ggsave(file, plot = plotInput(), device = "png", scale = 1,
+             width = 1800,
+             height = 1000,
+             units = "px",
+             dpi = 300)
     }
   )
 }
