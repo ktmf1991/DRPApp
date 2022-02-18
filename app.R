@@ -92,7 +92,7 @@ server <- function(input, output, session) {
     
     dat <<- up_res()
     
-    dat.list <- split(dat,dat$Patient, drop = T)
+    dat.list <- split(dat,list(dat$Patient,dat$Plate),drop = T)
     
     dat.list <- lapply(dat.list, df.trans)
     
@@ -106,17 +106,20 @@ server <- function(input, output, session) {
     plot.res <- lapply(seq_along(plot.res), 
                        function(y) lapply(names(plot.res[[y]]),
                                           function(x) cbind(plot.res[[y]][[x]],
-                                                            Patient = rep(y,nrow(plot.res[[y]][[x]])),
+                                                            PP = rep(names(dat.list)[y],nrow(plot.res[[y]][[x]])),
                                                             Treatment_Drug = x)
                        )
     )
+    
+    
     plot.res <- tdlc(plot.res)
+    pp <- str_split(as.character(plot.res$PP),"\\.",simplify = T)
+    colnames(pp) <- c("Patient","Plate")
+    plot.res <- cbind(plot.res,pp)
     plot.res$Patient <- as.character(plot.res$Patient)
     plot.res <<- plot.res
     
-    dat.list <- lapply(seq_along(dat.list),function(x) cbind(dat.list[[x]]))
     dat.list <- odlc(dat.list)
-    plot.res$Patient <- as.factor(plot.res$Patient)
     dat.list <<- as.data.frame(dat.list)
     
     df <- split(dat.list,dat.list$Treatment_Drug)
