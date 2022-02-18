@@ -2,7 +2,7 @@
 df.trans <- function(dat){
   require(tidyverse)
   dat <- dat[,c("Well","Treatment_Drug","Concentration_1","Unit_1","Concentration_2",
-                "Unit_2","Remark","Count","Patient")]
+                "Unit_2","Remark","Count","Patient","Plate")]
   dat$Concentration_1[dat$Remark == "Neg_Control"] <- 0
   dat$Concentration_2[dat$Remark == "Neg_Control"] <- 0
   dat <- dat %>%
