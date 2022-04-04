@@ -15,7 +15,7 @@ A Shiny app designed to perform simple and quick analysis and comparison of drug
   - Plate: Plate. This app is designed for medium-sized chemical library and assume for drugs are fixed on the same plate for the same patient tested.
 
 # To use the app:
-1. Call *shiny* library. Run `runGitHub("DRPApp","ktmf1991","main",subdir = "R")`.
+1. Run `shiny::runGitHub("DRPApp","ktmf1991","main",subdir = "R")`.
 2. Upload data by clicking *Browse*.
 3. Click *Analyse*. It may take a minute depending on the speed of your computer.
 4. Check the results.
