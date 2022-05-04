@@ -5,6 +5,7 @@ df.trans <- function(dat){
                 "Unit_2","Remark","Count","Patient","Plate")]
   dat$Concentration_1[dat$Remark == "Neg_Control"] <- 0
   dat$Concentration_2[dat$Remark == "Neg_Control"] <- 0
+  dat$Treatment_Drug[dat$Remark == "Pos_Control"] <- paste0(dat$Treatment_Drug[dat$Remark == "Pos_Control"],"_Pt",dat$Patient[dat$Remark == "Pos_Control"],"_Pl",dat$Plate[dat$Remark == "Pos_Control"])
   dat <- dat %>%
     mutate(Max = mean(.[Concentration_2 == 0, "Count"])) %>%
     mutate(Percentage = Count*100/Max)
